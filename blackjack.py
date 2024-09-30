@@ -1,5 +1,6 @@
 from random import choice,randint,random
 import sys,time
+from math import floor
 # from collections import Counter
 
 # def get_21_combinations():
@@ -35,6 +36,18 @@ import sys,time
 #     c.write("]")
 
 # tprint(f"\nTotal number of combinations: {len(combinations)}")
+def txtr(txt):
+    s="ﺈઊ⧥ֆ៖߮＆꘎⟬〕▁☩Ⴓ₩𝝽®ㄒ￥ມ𝕀ዑᎮ⦃｜❵𝓐ﻛ𝓓ꘘ𝓖ⴼਹ𝓚╚ⵓ\"ɀӼƇᏤβℿღ≼⋟ᕉ⥠ഉਡᔦちϬ𐒇ზፃ𝞱–𝍡Ⴓ₩𝝽®ㄒ￥ມ𝕀ዑᎮ⟦⦎╲ઊકԂ𝖋ဌ𐒅ژꝄไ⨾ʾʑ𝖝ር√Ꙏกጢ⸒ⴰ⟋_"
+    s2="~!@#$%^&*()_+QWERTYUIOP{|}ASDFGHJKL:\"ZXCVBNM<>?`1234567890-=QWERTYUIOP[]\asdfghjkl;'zxcvbnm,./ "
+    st=""
+    for i in txt:
+        ind=s2.find(i)
+        print(ind,i)
+        if ind!=-1:
+            st+=s[ind]
+        else:
+            st+=i
+    return st
 def nmr(nm):
     nm=str(nm)
     s="𝞱⥠ഉਡᔦちϬ𐒇ზፃ"
@@ -50,11 +63,12 @@ def tprint(*text,sp=False):
     if isinstance(text,tuple):
         txt=[]
         for i in text:
-            if isinstance(i,int):
-                txt.append(nmr(i))
-            else:
-                txt.append(str(i))
+            # if isinstance(i,int):
+            #     txt.append(nmr(i))
+            # else:
+            txt.append(str(i))
         text=" ".join(txt)
+    text=txtr(text)
     punctuation = {
     "." : 0.25,
     "!" : 0.15,
@@ -142,7 +156,7 @@ while True:
             break
         if mn.isdigit()and int(mn)<10:
             tprint("Too low!")
-    mn=randint(10,mon[1]/2)
+    mn=randint(10,floor(mon[1]/2))
     mon[1]-=mn
     bt+=mn
     while True:
@@ -165,7 +179,7 @@ while True:
             tprint("Your total:",yr)
             gdc,bdc=chnc(yr)
             # tprint("Chance of dying next:",str(bdc)+"% chance!")
-            tprint("Your chance of living is",str(gdc),"%!")
+            tprint("Your chance of living is",gdc,"%!")
             tprint("I would do it!" if gdc>bdc else "I wouldn't draw!")
             dor=intput("Hit? (y/n) ")
             if dor!="y":
