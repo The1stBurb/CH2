@@ -60,7 +60,7 @@ tme=[gt(),gt(),0]
 def tmr():
     global tme
     pt,ct=tme[1],gt()
-    cpt=((ct-pt))#//34
+    cpt=((ct-pt))//34
     if cpt>34:
         cpt=cpt-34
     cpt+=tme[2]
@@ -97,7 +97,7 @@ def action():
     # print(tme)
     tprint("Its the",sm(tme[2][1]),"day.")
     tprint("You are on a",["None","field","forest","river","moustain"][mp[plr[0]][plr[1]]],"tile!")
-    inp=intput("You can:\n 1. Explore\n 2. Build\n 3. Eat\n 4. Rest\n 5. Open your backpack",sp=0.001)
+    inp=intput("You can:\n 1. Explore\n 2. Build\n 3. Eat\n 4. Rest\n 5. Look for resources\n 6. Open your backpack",sp=0.001)
     match inp:
         case "1":
             inp=intput("What direction? 1-Up, 2-Right, 3-Down, 4-Left")
@@ -105,20 +105,27 @@ def action():
                 upMp(int(inp))
                 print(mp)
             else:
-                print("Can't go that direction!")
+                tprint("Can't go that direction!")
         case "2":
-            print("2")
+            b=input("Sorry but building isn't availible!",inp="Press enter to continue!")
         case "3":
-            print("3")
+            b=input("Sorry but eating isn't availible!",inp="Press enter to continue!")
         case "4":
-            print("4")
+            tprint("You decide the nearest spot of ground looks comfy!")
+            for i in ["z","Z","z","z","Z"]:
+                print(i)
+                sleep(random()/2)
+            tprint("You wake up feeling very refreshed!\nYou gain 0HP!")
         case "5":
             print("5")
+        case "6":
+            print("6")
         case _:
             tprint("Woops! Not an action!")
-            sleep(0.5)
+    sleep(0.5)
 # tprint("Welcome to this world! If you don't remember, like most, you have been selected to test thois newly found world! Explore, because we are using YOU to find out if humans can live here! The country thanks you for your work!")
 # tprint("PS. if you are in trouble we won't rescue you!",sp=10**-15)
 # intput("You should find a handbook in your backpack!",sp=False,inp="Press enter to continue!")
 while True:
+    print("\033c")
     action()
