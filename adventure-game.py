@@ -56,7 +56,7 @@ def intput(*txt,sp=0.005,inp=""):
 def gt():
     # print(perf_counter_ns())
     return perf_counter()
-tme=[gt(),gt(),0]
+tme=[gt(),gt(),2]
 def tmr():
     global tme
     pt,ct=tme[1],gt()
@@ -98,6 +98,17 @@ def res(tl):
     for i in range(randint(2,5)):
         fnd.append([choice(rs),randint(1,3)])
     return fnd
+def bfix():
+    global p
+    inv={}
+    for i in p[2]:
+        # print(i)
+        if i[0] in inv:
+            inv[i[0]]+=i[1]
+        else:
+            inv[i[0]]=i[1]
+    for i in inv:
+        p[2].append([i,inv[i]])
 def action():
     tme=tmr()
     # print(tme)
@@ -123,12 +134,16 @@ def action():
                 sleep(random()/2)
             tprint("You wake up feeling very refreshed!\nYou gain 0HP!")
         case "5":
-            fnd=res(mp[p[0],p[1]])
+            fnd=res(mp[p[1]][p[0]])
             for i in fnd:
-                tprint(str(fnd[1])+"x",fnd[0])
-            p[2].append(fnd)
+                tprint(str(i[1])+"x",i[0])
+                p[2].append(i)
+            bfix()
         case "6":
-            print("6")
+            for i in p[2]:
+                tprint(str(i[1])+"x",i[0])
+            intput("")
+            # print("6")
         case _:
             tprint("Woops! Not an action!")
     sleep(0.5)
