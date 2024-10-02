@@ -21,6 +21,7 @@ def txtr(txt):
             st+=i
     return st#txt
 def tprint(*text,sp=False):
+    sp=10**-15
     # print(type(text))
     # if isinstance(text[0],tuple):
     #     text=text[0]
@@ -42,7 +43,7 @@ def tprint(*text,sp=False):
         sys.stdout.write(char)
         sys.stdout.flush()
         if char in punctuation:
-            sleep(punctuation[char])
+            sleep(0)#punctuation[char])
         else:
             r=random()/2+0.5
             sleep(r*(0.05 if sp==False else sp))
@@ -66,7 +67,7 @@ def tmr():
     cpt+=tme[2]
     return [round(pt),round(ct),[cpt,cpt/2]]
 p=[0,0,[["Handbook",1]]]
-mp=[[randint(1,4)]]
+mp=[[[randint(1,4),[0]]]]
 def upMp(d):
     global mp,p
     #types 0-none,1-field,2-forest,3-river,4-mount
@@ -80,24 +81,18 @@ def upMp(d):
         p[0]-=1
     if p[0]<0:
         for i in range(len(mp)):
-            mp[i].insert(0,randint(1,4))
+            mp[i].insert(0,[randint(1,4),[0]])
         p[0]=0
     elif p[0]>len(mp[0])-1:
         for i in range(len(mp)):
-            mp[i].append(randint(1,4))
+            mp[i].append([randint(1,4),[0]])
         p[0]=len(mp[0])-1
     elif p[1]<0:
-        mp.insert(0,[randint(1,4)for i in range(len(mp[0]))])
+        mp.insert(0,[[randint(1,4),[0]]for i in range(len(mp[0]))])
         p[1]=0
     elif p[1]>len(mp)-1:
-        mp.append([randint(1,4)for i in range(len(mp[0]))])
+        mp.append([[randint(1,4),[0]]for i in range(len(mp[0]))])
         p[1]=len(mp)-1
-def res(tl):
-    rs=[["nothing!"],["grass","hemp","seed"],["wood","leaf","apple"],["water","rock","fish"],["rock","rock","coal","iron","rock","wood","rock"]][tl]
-    fnd=[]
-    for i in range(randint(2,5)):
-        fnd.append([choice(rs),randint(1,3)])
-    return fnd
 def bfix():
     global p
     inv={}
@@ -107,13 +102,100 @@ def bfix():
             inv[i[0]]+=i[1]
         else:
             inv[i[0]]=i[1]
+    p[2]=[]
     for i in inv:
         p[2].append([i,inv[i]])
+mater={
+    "nothing":["None"],
+    "handbook":["read"],
+    "grass":["eat","burn"],
+    "hemp":["eat","burn"],
+    "seed":["eat","throw","burn"],
+    "wood":["build","throw","burn"],
+    "leaf":["eat","burn"],
+    "apple":["eat","throw"],
+    "water":["drink"],
+    "rock":["build","throw"],
+    "fish":["eat","throw"],
+    "coal":["throw","burn"],
+    "iron":["throw","build"],}
+craft={
+    "fire":[[["wood","coal"],5],1],
+    "house":[["wood",50],2],
+    "pickaxe":[[["rock","iron"],[4,2]],["wood",2],3],
+}
+def build():
+    global craft,mater,p
+    print("You have:")
+    bbl={}
+    for a,i in enumerate(p[2]):
+        if "build" in mater[i[0].lower()]:
+            print("  ",str(i[1])+"x",i[0])
+            bbl[i[0]]=[i[1],a]
+    print()
+    # bld={}
+    for a,i in enumerate(craft):
+        c=craft[i]
+        print(str(a+1)+".",i+":")
+        # bld[i]=[]
+        for j in range(len(c)-1):
+            k=c[j]
+            mx=[]
+            nal=True if isinstance(k[0],list) else False
+            nul=True if isinstance(k[1],list) else False
+            if nal and nul:
+                for l in range(len(k[0])):
+                    mx.append(str(k[1][l])+"x "+k[0][l])
+                    # bld[i].append([k[0][l],k[1][l]])
+            elif nal:
+                for l in range(len(k[0])):
+                    mx.append(str(k[1])+"x "+k[0][l])
+                    # bld[i].append([k[0][l],k[1]])
+            print("  ",(" or ".join(mx)if nal else str(k[1])+"x "+k[0]))
+            # print("  ",str(c[j][1])+"x",(" or ".join(c[j][0])if isinstance(c[j][0],list)else c[j][0]))
+    while True:
+        bld=intput("What would you like to build")
+        if not bld in craft:
+            print("Whoops! You can't build that!")
+        else:
+            break
+    rsc=craft[bld]
+    # mx={}
+    for i in rsc:
+        mx={}
+        nal=True if isinstance(i[0],list) else False
+        nul=True if isinstance(i[1],list) else False
+        if nal and nul:
+            for l in range(len(i[0])):
+                # mx.append(str(k[1][l])+"x "+k[0][l])
+                mx[i[0][l]]=i[1][l]
+        elif nal:
+            for l in range(len(k[0])):
+                mx[i[0][l]]=i[1]
+                # mx.append(str(k[1])+"x "+k[0][l])
+        if nal:
+            gd=False
+            for j in mx:
+                if j in bbl and bbl[i][0]>=mx[j]:
+                    p[2][bbl[i][1]][1]-=mx[j]
+        else:
+            if i in bbl and bbl[i][0]>=rsc[i]:
+                p[2][bbl[i][1]][1]-=rsc[i]
+    # for i in mx:
+    #     if i in bbl:
+    #         if 
+def res(tl):
+    rs=[["nothing!"],["grass","hemp","seed"],["wood","leaf","apple"],["water","rock","fish"],["rock","rock","coal","iron","rock","wood","rock"]][tl]
+    fnd=[]
+    for i in range(randint(2,5)):
+        fnd.append([choice(rs),randint(1,3)])
+    return fnd
 def action():
+    tle=mp[p[0]][p[1]][0]
     tme=tmr()
     # print(tme)
     tprint("Its the",sm(tme[2][1]),"day.")
-    tprint("You are on a",["None","field","forest","river","moustain"][mp[p[0]][p[1]]],"tile!")
+    tprint("You are on a",["None","field","forest","river","moustain"][tle],"tile!")
     inp=intput("You can:\n 1. Explore\n 2. Build\n 3. Eat\n 4. Rest\n 5. Look for resources\n 6. Open your backpack",sp=0.001)
     match inp:
         case "1":
@@ -124,7 +206,9 @@ def action():
             else:
                 tprint("Can't go that direction!")
         case "2":
-            b=input("Sorry but building isn't availible!",inp="Press enter to continue!")
+            build()
+            # b=input("Sorry but building isn't availible!",inp="Press enter to continue!")
+            # continue
         case "3":
             b=input("Sorry but eating isn't availible!",inp="Press enter to continue!")
         case "4":
@@ -134,7 +218,7 @@ def action():
                 sleep(random()/2)
             tprint("You wake up feeling very refreshed!\nYou gain 0HP!")
         case "5":
-            fnd=res(mp[p[1]][p[0]])
+            fnd=res(tle)
             for i in fnd:
                 tprint(str(i[1])+"x",i[0])
                 p[2].append(i)
