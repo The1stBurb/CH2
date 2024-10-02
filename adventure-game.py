@@ -65,38 +65,44 @@ def tmr():
         cpt=cpt-34
     cpt+=tme[2]
     return [round(pt),round(ct),[cpt,cpt/2]]
-plr=[0,0]
+p=[0,0,[["Handbook",1]]]
 mp=[[randint(1,4)]]
 def upMp(d):
-    global mp,plr
+    global mp,p
     #types 0-none,1-field,2-forest,3-river,4-mount
     if d==1:
-        plr[1]-=1
+        p[1]-=1
     elif d==2:
-        plr[0]+=1
+        p[0]+=1
     elif d==3:
-        plr[1]+=1
+        p[1]+=1
     elif d==4:
-        plr[0]-=1
-    if plr[0]<0:
+        p[0]-=1
+    if p[0]<0:
         for i in range(len(mp)):
             mp[i].insert(0,randint(1,4))
-        plr[0]=0
-    elif plr[0]>len(mp[0])-1:
+        p[0]=0
+    elif p[0]>len(mp[0])-1:
         for i in range(len(mp)):
             mp[i].append(randint(1,4))
-        plr[0]=len(mp[0])-1
-    elif plr[1]<0:
+        p[0]=len(mp[0])-1
+    elif p[1]<0:
         mp.insert(0,[randint(1,4)for i in range(len(mp[0]))])
-        plr[1]=0
-    elif plr[1]>len(mp)-1:
+        p[1]=0
+    elif p[1]>len(mp)-1:
         mp.append([randint(1,4)for i in range(len(mp[0]))])
-        plr[1]=len(mp)-1
+        p[1]=len(mp)-1
+def res(tl):
+    rs=[["nothing!"],["grass","hemp","seed"],["wood","leaf","apple"],["water","rock","fish"],["rock","rock","coal","iron","rock","wood","rock"]][tl]
+    fnd=[]
+    for i in range(randint(2,5)):
+        fnd.append([choice(rs),randint(1,3)])
+    return fnd
 def action():
     tme=tmr()
     # print(tme)
     tprint("Its the",sm(tme[2][1]),"day.")
-    tprint("You are on a",["None","field","forest","river","moustain"][mp[plr[0]][plr[1]]],"tile!")
+    tprint("You are on a",["None","field","forest","river","moustain"][mp[p[0]][p[1]]],"tile!")
     inp=intput("You can:\n 1. Explore\n 2. Build\n 3. Eat\n 4. Rest\n 5. Look for resources\n 6. Open your backpack",sp=0.001)
     match inp:
         case "1":
@@ -117,7 +123,10 @@ def action():
                 sleep(random()/2)
             tprint("You wake up feeling very refreshed!\nYou gain 0HP!")
         case "5":
-            print("5")
+            fnd=res(mp[p[0],p[1]])
+            for i in fnd:
+                tprint(str(fnd[1])+"x",fnd[0])
+            p[2].append(fnd)
         case "6":
             print("6")
         case _:
