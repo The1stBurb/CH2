@@ -66,8 +66,8 @@ def tmr():
         cpt=cpt-34
     cpt+=tme[2]
     return [round(pt),round(ct),[cpt,cpt/2]]
-p=[0,0,[["Handbook",1]]]
-mp=[[[randint(1,4),[0]]]]
+p=[0,0,[["Handbook",1],["Wood",10]]]
+mp=[[[randint(1,4),[]]]]
 def upMp(d):
     global mp,p
     #types 0-none,1-field,2-forest,3-river,4-mount
@@ -81,18 +81,21 @@ def upMp(d):
         p[0]-=1
     if p[0]<0:
         for i in range(len(mp)):
-            mp[i].insert(0,[randint(1,4),[0]])
+            mp[i].insert(0,[randint(1,4),[]])
         p[0]=0
     elif p[0]>len(mp[0])-1:
         for i in range(len(mp)):
-            mp[i].append([randint(1,4),[0]])
+            mp[i].append([randint(1,4),[]])
         p[0]=len(mp[0])-1
     elif p[1]<0:
-        mp.insert(0,[[randint(1,4),[0]]for i in range(len(mp[0]))])
+        mp.insert(0,[[randint(1,4),[]]for i in range(len(mp[0]))])
         p[1]=0
     elif p[1]>len(mp)-1:
-        mp.append([[randint(1,4),[0]]for i in range(len(mp[0]))])
+        mp.append([[randint(1,4),[]]for i in range(len(mp[0]))])
         p[1]=len(mp)-1
+def adBi(itm):
+    global mp,p
+    mp[p[1]][p[0]][1].append()
 def bfix():
     global p
     inv={}
@@ -104,7 +107,8 @@ def bfix():
             inv[i[0]]=i[1]
     p[2]=[]
     for i in inv:
-        p[2].append([i,inv[i]])
+        if inv[i]>0:
+            p[2].append([i,inv[i]])
 mater={
     "nothing":["None"],
     "handbook":["read"],
@@ -131,11 +135,13 @@ def build():
     for a,i in enumerate(p[2]):
         if "build" in mater[i[0].lower()]:
             print("  ",str(i[1])+"x",i[0])
-            bbl[i[0]]=[i[1],a]
+            bbl[i[0].lower()]=[i[1],a]
     print()
     # bld={}
+    crft2={}
     for a,i in enumerate(craft):
         c=craft[i]
+        # craft2[i]=[]
         print(str(a+1)+".",i+":")
         # bld[i]=[]
         for j in range(len(c)-1):
@@ -154,38 +160,51 @@ def build():
             print("  ",(" or ".join(mx)if nal else str(k[1])+"x "+k[0]))
             # print("  ",str(c[j][1])+"x",(" or ".join(c[j][0])if isinstance(c[j][0],list)else c[j][0]))
     while True:
-        bld=intput("What would you like to build")
+        bld="fire"#intput("What would you like to build")
         if not bld in craft:
             print("Whoops! You can't build that!")
         else:
             break
-    rsc=craft[bld]
+    rsc=craft[bld][:-1]
+    # print(rsc)
     # mx={}
+    gd=False
     for i in rsc:
+        gd=False
         mx={}
         nal=True if isinstance(i[0],list) else False
         nul=True if isinstance(i[1],list) else False
-        if nal and nul:
-            for l in range(len(i[0])):
-                # mx.append(str(k[1][l])+"x "+k[0][l])
-                mx[i[0][l]]=i[1][l]
-        elif nal:
-            for l in range(len(k[0])):
-                mx[i[0][l]]=i[1]
-                # mx.append(str(k[1])+"x "+k[0][l])
+        # print(nal,nul)
+        #bbl is what u have
+        #if nal than it is or
+        #else normal
         if nal:
-            gd=False
-            for j in mx:
-                if j in bbl and bbl[i][0]>=mx[j]:
-                    p[2][bbl[i][1]][1]-=mx[j]
+            if nul:
+                for l in range(len(i[0])):
+                    if i[0][l]in bbl and bbl[i[0][l]][0]>=i[1][l]:
+                        gd=[i[0][l],i[1][l]]
+                        break
+            else:
+                for l in range(len(i[0])):
+                    # print(i[0][l],i[1],bbl[i[0][l]][0])
+                    if i[0][l]in bbl and bbl[i[0][l]][0]>=i[1]:
+                        gd=[i[0][l],i[1]]
+                        break
         else:
-            if i in bbl and bbl[i][0]>=rsc[i]:
-                p[2][bbl[i][1]][1]-=rsc[i]
-    # for i in mx:
-    #     if i in bbl:
-    #         if 
+            if i[0]in bbl and bbl[i[0]][0]>=i[1]:
+                gd=[i[0],i[1]]
+        # print(gd)
+        if gd==False:
+            break
+    # print(p[2],bbl)
+    if gd!=False:
+        p[2][bbl[gd[0]][1]][1]-=gd[1]
+    # print(p[2])
+    bfix()
+    # quit()
+    
 def res(tl):
-    rs=[["nothing!"],["grass","hemp","seed"],["wood","leaf","apple"],["water","rock","fish"],["rock","rock","coal","iron","rock","wood","rock"]][tl]
+    rs=[["nothing!"],["grass","hemp","seed"],["wood","leaf","apple"],["water","rock","fish"],["rock","coal","iron","wood"]][tl]#,"rock","rock","rock"
     fnd=[]
     for i in range(randint(2,5)):
         fnd.append([choice(rs),randint(1,3)])
@@ -196,7 +215,7 @@ def action():
     # print(tme)
     tprint("Its the",sm(tme[2][1]),"day.")
     tprint("You are on a",["None","field","forest","river","moustain"][tle],"tile!")
-    inp=intput("You can:\n 1. Explore\n 2. Build\n 3. Eat\n 4. Rest\n 5. Look for resources\n 6. Open your backpack",sp=0.001)
+    inp="2"#intput("You can:\n 1. Explore\n 2. Build\n 3. Eat\n 4. Rest\n 5. Look for resources\n 6. Open your backpack",sp=0.001)
     match inp:
         case "1":
             inp=intput("What direction? 1-Up, 2-Right, 3-Down, 4-Left")
