@@ -2,6 +2,7 @@ from random import choice,randint,random
 import sys
 from time import sleep,perf_counter
 from math import floor
+#from adventureSupp import craft
 def sm(n):
     n=int(n)
     ks={"1":"st","2":"nd","3":"rd"}
@@ -66,7 +67,9 @@ def tmr():
         cpt=cpt-34
     cpt+=tme[2]
     return [round(pt),round(ct),[cpt,cpt/2]]
-p=[0,0,[["Handbook",1],["Wood",10]]]
+
+p=[0,0,[["Handbook",1],["Wood",10]],""]
+
 mp=[[[randint(1,4),[]]]]
 def upMp(d):
     global mp,p
@@ -118,7 +121,7 @@ mater={
     "wood":["build","throw","burn"],
     "leaf":["eat","burn"],
     "apple":["eat","throw"],
-    "water":["drink"],
+    "water":["eat"],
     "rock":["build","throw"],
     "fish":["eat","throw"],
     "coal":["throw","burn"],
@@ -160,7 +163,7 @@ def build():
             print("  ",(" or ".join(mx)if nal else str(k[1])+"x "+k[0]))
             # print("  ",str(c[j][1])+"x",(" or ".join(c[j][0])if isinstance(c[j][0],list)else c[j][0]))
     while True:
-        bld="fire"#intput("What would you like to build")
+        bld=intput("What would you like to build")
         if not bld in craft:
             print("Whoops! You can't build that!")
         else:
@@ -202,7 +205,37 @@ def build():
     # print(p[2])
     bfix()
     # quit()
-    
+eff={
+    "":" have no effects!",
+    "hyd":" got hydrated!",
+    "fire":"r on fire!!",
+    "pois":"v'e been poisoned!",
+    "haluc":"r halucinating!",
+    "unc":"r unconscious!",
+    "wind":"r winded!",
+}
+eatr={
+    #name:hunger/hp+,effects  "":[,[]],
+    "grass":[0,[]],
+    "hemp":[1,[]],
+    "seed":[3,["haluc"]],
+    "leaf":[0,["pois"]],
+    "apple":[5,[]],
+    "water":[0,["hyd"]],
+    "fish":[10,[]],
+}
+def eat():
+    global p,mater
+    print("You can eat:")
+    bbl={}
+    for a,i in enumerate(p[2]):
+        if "eat" in mater[i[0].lower()]:
+            print("  ",str(i[1])+"x",i[0])
+            bbl[i[0].lower()]=[i[1],a]
+    print()
+
+
+
 def res(tl):
     rs=[["nothing!"],["grass","hemp","seed"],["wood","leaf","apple"],["water","rock","fish"],["rock","coal","iron","wood"]][tl]#,"rock","rock","rock"
     fnd=[]
@@ -213,9 +246,11 @@ def action():
     tle=mp[p[0]][p[1]][0]
     tme=tmr()
     # print(tme)
-    tprint("Its the",sm(tme[2][1]),"day.")
+    tprint("Its the",sm(tme[2][1]),"day. The hour is",str(tme[2][1])+".")
+    tprint("You"+eff[p[3]])
     tprint("You are on a",["None","field","forest","river","moustain"][tle],"tile!")
-    inp="2"#intput("You can:\n 1. Explore\n 2. Build\n 3. Eat\n 4. Rest\n 5. Look for resources\n 6. Open your backpack",sp=0.001)
+    inp="3"#intput("You can:\n 1. Explore\n 2. Build\n 3. Eat\n 4. Rest\n 5. Look for resources\n 6. Open your backpack",sp=0.001)
+    print()
     match inp:
         case "1":
             inp=intput("What direction? 1-Up, 2-Right, 3-Down, 4-Left")
@@ -229,7 +264,8 @@ def action():
             # b=input("Sorry but building isn't availible!",inp="Press enter to continue!")
             # continue
         case "3":
-            b=input("Sorry but eating isn't availible!",inp="Press enter to continue!")
+            eat()
+            b=intput("Sorry but eating isn't availible!",inp="Press enter to continue!")
         case "4":
             tprint("You decide the nearest spot of ground looks comfy!")
             for i in ["z","Z","z","z","Z"]:
