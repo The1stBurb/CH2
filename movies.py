@@ -1,5 +1,5 @@
 class movie:
-    def __init__(self,title,releaseYear,director,rating,genre,cast)
+    def __init__(self,title,releaseYear,director,rating,genre,cast):
         self.tit,self.ry,self.dir,self.rat,self.gr,self.ct=title,releaseYear,director,rating,genre,cast
         #titles, release year, director, rating, genre and cast
     def __str__(self):
@@ -59,12 +59,40 @@ def getGnr(gnr):
     for i in movies:
         if i.inGnr(gnr):
             print(i)
+def getcst(gnr):
+    # inGnr=[]
+    for i in movies:
+        if i.cstSrch(gnr):
+            print(i)
+def getGnr(gnr):
+    # inGnr=[]
+    for i in movies:
+        if i.inGnr(gnr):
+            print(i)
 def chronSort():
     global movies
     # srt=[]
     for i in range(len(movies)):
         for j in range(i+1,len(movies)):
-            movies[i],movies[j]=movies[i].alphSort(movies[i],movies[j])
+            movies[i],movies[j]=movies[i].chrnSort(movies[i],movies[j])
+def pra():
+    for i in movies:
+        print(i)
+while True:
+    ac=input("1-Alphabetical sort\n2-Chronological Order\n3-Of Genre\n4-Director Search\n5-Cast Search ")
+    match ac:
+        case "1":
+            alphaSort()
+            pra()
+        case "2":
+            chronSort()
+            pra()
+        case "3":
+            wht=input("What genre? ")
+            getGnr(wht)
+        case "4":
+            wht=input("Director: ")
+
 # Needs the init method yauygsalkjgjds
 # -Needs string methods that will print out all the information for the movies kjashgdkjgdsadsg
 # -Method that sorts the movies in alphabetical order kjaskjgdhdsag
