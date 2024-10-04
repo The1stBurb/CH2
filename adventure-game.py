@@ -298,7 +298,8 @@ def dcyc():
         tmp=-3
     tmp+=randint(-1,1)
     tmp/=2
-    return ["freezing","really cold","pretty cold","cold","slightly cold","good","slightly hot","hot","pretty hot","really hot","cooking"][floor(tmp)if tmp<0 else ceil(tmp)]
+    tmp=floor(tmp)if tmp<0 else ceil(tmp)
+    return ["freezing","really cold","pretty cold","cold","slightly cold","good","slightly hot","hot","pretty hot","really hot","cooking"][tmp+5]+str(tmp)
 def action():
     tle=mp[p[0]][p[1]][0]
     tme=tmr()
