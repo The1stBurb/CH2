@@ -255,7 +255,7 @@ def eat():
             cho=choice(hpp[1])
             eff.append(cho)
             p[3].append(cho)
-    hpp=hpp[0]*amn
+    hpp=max(50,hpp[0]*amn)
     hpp+=randint(-floor(hpp/5),ceil(hpp/5))
     p[2][bbl[wh.lower()][1]][1]-=amn
     p[4]+=hpp
@@ -319,36 +319,42 @@ def dcyc():
 def hpr():
     global p
     fel="dead"
-    if p[4]>0 and p[4]<=20:
+    if p[4]>0 and p[4]<=5:
         fel="really terrible"
+    elif p[4]>5 and p[4]<=10:
+        fel="terrible"
+    elif p[4]>10 and p[4]<=15:
+        fel="vary bad"
+    elif p[4]>15 and p[4]<=20:
+        fel="really bad"
     elif p[4]>50 and p[4]<=50:
         fel="bad" 
     elif p[4]>50 and p[4]<=80:
         fel="okay"
     elif p[4]>80 and p[4]<=110:
-        fel="great"
+        fel="really okay"
     elif p[4]>110 and p[4]<=200:
-        fel="wonderful"
+        fel="good"
     elif p[4]>200 and p[4]<=240:
-        fel=""
-    elif p[4]> and p[4]<=300:
-        fel=""
-    elif p[4]> and p[4]<=370:
-        fel=""
-    elif p[4]> and p[4]<=420:
-        fel=""
-    elif p[4]> and p[4]<=:
-        fel=""
-    elif p[4]> and p[4]<=:
-        fel=""
-    elif p[4]> and p[4]<=:
-        fel=""
-    elif p[4]> and p[4]<=:
-        fel=""
-    elif p[4]> and p[4]<=:
-        fel=""
+        fel="really good"
+    elif p[4]>240 and p[4]<=300:
+        fel="very good"
+    elif p[4]>370 and p[4]<=370:
+        fel="wonderful"
+    elif p[4]>420 and p[4]<=420:
+        fel="very wonderful"
+    elif p[4]>500 and p[4]<=500:
+        fel="really wonderful"
+    elif p[4]>580 and p[4]<=580:
+        fel="amazing"
+    elif p[4]>660 and p[4]<=660:
+        fel="very amazing"
+    elif p[4]>790 and p[4]<=790:
+        fel="really amazing"
+    elif p[4]>790 and p[4]<=900:
+        fel="incredibly amazing"
     else:
-        fel="like you shouldn't be this healthy"
+        fel="incredibly amazingly over-healthier"
     return fel
 def action():
     tle=mp[p[0]][p[1]][0]
@@ -398,6 +404,7 @@ def action():
             # print("6")
         case "stats":
             tprint("HP:",p[4],"\nEffects:",p[3])
+            intput("press enter")
         case _:
             tprint("Woops! Not an action!")
     sleep(0.5)
