@@ -68,7 +68,7 @@ def tmr():
     #     cpt=cpt-17
     tme=[round(tme[1]),round(ct),[(tme[2][0]+cpt)-(17 if tme[2][0]+cpt>17 else 0),tme[2][1]+(cpt/17)]]
 
-p=[0,0,[["Handbook",1],["seed",10]],[],100]
+p=[0,0,[["Handbook",1],["seed",10]],{},100]
 mp=[[[randint(1,4),[]]]]
 def upMp(d):
     global mp,p
@@ -254,7 +254,10 @@ def eat():
                 continue
             cho=choice(hpp[1])
             eff.append(cho)
-            p[3].append(cho)
+            if cho in p[3]:
+                p[3][cho]+=1
+            else:
+                p[3][cho]=1
     hpp=max(50,hpp[0]*amn)
     hpp+=randint(-floor(hpp/5),ceil(hpp/5))
     p[2][bbl[wh.lower()][1]][1]-=amn
@@ -363,8 +366,8 @@ def action():
     vrb=str(floor(tme[2][0]*100))
     tprint("Its the",sm(floor(tme[2][1]+1)),"day. It's",("0"*(4-len(vrb)))+vrb,"o'clock.")
     tprint("You feel",hpr(),"and",dcyc()+".")
-    for i in range(min(5,len(p[3]))):
-        tprint("You"+eff[p[3][i]])
+    for i in p[3]:
+        tprint("You"+eff[i],"x"+str(p[3][i]))
     if len(p[3])==0:
         tprint("You"+eff[""])
     tprint("You are on a",["None","field","forest","river","moustain"][tle],"tile!")
