@@ -58,15 +58,15 @@ def intput(*txt,sp=0.005,inp=""):
 def gt():
     # print(perf_counter_ns())
     return perf_counter()
-tme=[gt(),gt(),[2,0]]
+strt=gt()
+tme=[gt(),gt(),[4.25,0]]
 def tmr():
     global tme
     pt,ct=tme[1],gt()
-    cpt=((ct-pt))/17
-    if cpt>17:
-        cpt=cpt-17
-    cpt+=tme[2][0]
-    return [round(pt),round(ct),[cpt,cpt/2]]
+    cpt=((ct-pt)/6)/17
+    # if cpt>17:
+    #     cpt=cpt-17
+    tme=[round(tme[1]),round(ct),[(tme[2][0]+cpt)-(17 if tme[2][0]+cpt>17 else 0),tme[2][1]+(cpt/17)]]
 
 p=[0,0,[["Handbook",1],["seed",10]],[],100]
 mp=[[[randint(1,4),[]]]]
@@ -95,6 +95,7 @@ def upMp(d):
     elif p[1]>len(mp)-1:
         mp.append([[randint(1,4),[]]for i in range(len(mp[0]))])
         p[1]=len(mp)-1
+    return ["None","field","forest","river","moustain"][mp[p[1]][p[0]][0]]
 def adBi(itm):
     global mp,p
     mp[p[1]][p[0]][1].append()
@@ -215,9 +216,9 @@ eff={
 }
 eatr={
     #name:hunger/hp+,effects  "":[,[]],
-    "grass":[0,[]],
+    "grass":[0.1,[]],
     "hemp":[1,[]],
-    "seed":[3,["haluc"]],
+    "seed":[2,["haluc"]],
     "leaf":[0,["pois"]],
     "apple":[5,[]],
     "water":[0,["hyd"]],
@@ -232,19 +233,34 @@ def eat():
             print("  ",str(i[1])+"x",i[0])
             bbl[i[0].lower()]=[i[1],a]
     print()
-    wh=intput("What would you like to consume?")
+    wh=intput("What would you like to consume? ")
     if not wh.lower() in bbl:
         tprint("Woops! You can't eat that!")
         return
+    amn=intput("How many? ")
+    if amn.isdigit():
+        amn=int(amn)
+        if amn<=0:
+            amn=1
+        elif amn>bbl[wh.lower()][0]:
+            amn=bbl[wh.lower()][0]
+    else:
+        amn=1
     hpp=eatr[wh.lower()]
-    eff=""
+    eff=[""]
     if len(hpp[1])>0:
-        eff=choice(hpp[1])
-        p[3].append(eff)
-    hpp=hpp[0]
+        for i in range(amn):
+            if randint(0,4)==0:
+                continue
+            cho=choice(hpp[1])
+            eff.append(cho)
+            p[3].append(cho)
+    hpp=hpp[0]*amn
     hpp+=randint(-floor(hpp/5),ceil(hpp/5))
+    p[2][bbl[wh.lower()][1]][1]-=amn
     p[4]+=hpp
-    tprint("You eat the",wh,"and it gives you",hpp,"HP points!","\nYou get the effect: "+eff if eff!="" else"")
+    tprint("You eat the",wh,"and it gives you",hpp,"HP points!","\nYou get the effect: "+eff[-1] if eff[-1]!="" else"")
+    bfix()
 
 def res(tl):
     rs=[["nothing!"],["grass","hemp","seed"],["wood","leaf","apple"],["water","rock","fish"],["rock","coal","iron","wood"]][tl]#,"rock","rock","rock"
@@ -299,26 +315,61 @@ def dcyc():
     tmp+=randint(-1,1)
     tmp/=2
     tmp=floor(tmp)if tmp<0 else ceil(tmp)
-    return ["freezing","really cold","pretty cold","cold","slightly cold","good","slightly hot","hot","pretty hot","really hot","cooking"][tmp+5]+str(tmp)
+    return ["freezing","really cold","pretty cold","cold","slightly cold","good","slightly hot","hot","pretty hot","really hot","cooking"][tmp+5]
+def hpr():
+    global p
+    fel="dead"
+    if p[4]>0 and p[4]<=20:
+        fel="really terrible"
+    elif p[4]>50 and p[4]<=50:
+        fel="bad" 
+    elif p[4]>50 and p[4]<=80:
+        fel="okay"
+    elif p[4]>80 and p[4]<=110:
+        fel="great"
+    elif p[4]>110 and p[4]<=200:
+        fel="wonderful"
+    elif p[4]>200 and p[4]<=240:
+        fel=""
+    elif p[4]> and p[4]<=300:
+        fel=""
+    elif p[4]> and p[4]<=370:
+        fel=""
+    elif p[4]> and p[4]<=420:
+        fel=""
+    elif p[4]> and p[4]<=:
+        fel=""
+    elif p[4]> and p[4]<=:
+        fel=""
+    elif p[4]> and p[4]<=:
+        fel=""
+    elif p[4]> and p[4]<=:
+        fel=""
+    elif p[4]> and p[4]<=:
+        fel=""
+    else:
+        fel="like you shouldn't be this healthy"
+    return fel
 def action():
     tle=mp[p[0]][p[1]][0]
-    tme=tmr()
-    # print(tme)
-    tprint("Its the",sm(floor(tme[2][1])),"day. The hour is",str(floor(tme[2][0]))+".")
-    tprint("You feel",dcyc()+".")
-    for i in p[3]:
-        tprint("You"+eff[i])
+    tmr()
+    # print(tme,"\n",round(tme[1]-strt))
+    vrb=str(floor(tme[2][0]*100))
+    tprint("Its the",sm(floor(tme[2][1]+1)),"day. It's",("0"*(4-len(vrb)))+vrb,"o'clock.")
+    tprint("You feel",hpr(),"and",dcyc()+".")
+    for i in range(min(5,len(p[3]))):
+        tprint("You"+eff[p[3][i]])
     if len(p[3])==0:
-        tprint("You",eff[""])
+        tprint("You"+eff[""])
     tprint("You are on a",["None","field","forest","river","moustain"][tle],"tile!")
-    inp="3"#intput("You can:\n 1. Explore\n 2. Build\n 3. Eat\n 4. Rest\n 5. Look for resources\n 6. Open your backpack",sp=0.001)
+    inp=intput("You can:\n 1. Explore\n 2. Build\n 3. Eat\n 4. Rest\n 5. Look for resources\n 6. Open your backpack",sp=0.001)
     print()
     match inp:
         case "1":
             inp=intput("What direction? 1-Up, 2-Right, 3-Down, 4-Left")
             if inp.isdigit()and int(inp)in range(1,5):
-                upMp(int(inp))
-                print(mp)
+                tprint("You find a:",upMp(int(inp)),"tile!")
+                # print(mp)
             else:
                 tprint("Can't go that direction!")
         case "2":
@@ -345,6 +396,8 @@ def action():
                 tprint(str(i[1])+"x",i[0])
             intput("")
             # print("6")
+        case "stats":
+            tprint("HP:",p[4],"\nEffects:",p[3])
         case _:
             tprint("Woops! Not an action!")
     sleep(0.5)
