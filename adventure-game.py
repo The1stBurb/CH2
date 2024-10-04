@@ -352,7 +352,7 @@ def hpr():
         fel="amazing"
     elif p[4]>660 and p[4]<=660:
         fel="very amazing"
-    elif p[4]>790 and p[4]<=790:
+    elif p[4]>660 and p[4]<=790:
         fel="really amazing"
     elif p[4]>790 and p[4]<=900:
         fel="incredibly amazing"
