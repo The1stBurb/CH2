@@ -1,7 +1,7 @@
 from random import choice,randint,random
 import sys
 from time import sleep,perf_counter
-from math import floor
+from math import floor,ceil
 #from adventureSupp import craft
 def sm(n):
     n=int(n)
@@ -58,18 +58,17 @@ def intput(*txt,sp=0.005,inp=""):
 def gt():
     # print(perf_counter_ns())
     return perf_counter()
-tme=[gt(),gt(),2]
+tme=[gt(),gt(),[2,0]]
 def tmr():
     global tme
     pt,ct=tme[1],gt()
-    cpt=((ct-pt))//34
-    if cpt>34:
-        cpt=cpt-34
-    cpt+=tme[2]
-    return [round(pt),round(ct),[cpt,cpt/2]]
+    cpt=((ct-pt))//17
+    if cpt>17:
+        cpt=cpt-17
+    cpt+=tme[2][0]
+    return [round(pt),round(ct),[cpt,cpt//2]]
 
-p=[0,0,[["Handbook",1],["Wood",10]],""]
-
+p=[0,0,[["Handbook",1],["seed",10]],[],100]
 mp=[[[randint(1,4),[]]]]
 def upMp(d):
     global mp,p
@@ -133,7 +132,7 @@ craft={
 }
 def build():
     global craft,mater,p
-    print("You have:")
+    tprint("You have:")
     bbl={}
     for a,i in enumerate(p[2]):
         if "build" in mater[i[0].lower()]:
@@ -165,7 +164,7 @@ def build():
     while True:
         bld=intput("What would you like to build")
         if not bld in craft:
-            print("Whoops! You can't build that!")
+            tprint("Whoops! You can't build that!")
         else:
             break
     rsc=craft[bld][:-1]
@@ -226,15 +225,26 @@ eatr={
 }
 def eat():
     global p,mater
-    print("You can eat:")
+    tprint("You can eat:")
     bbl={}
     for a,i in enumerate(p[2]):
         if "eat" in mater[i[0].lower()]:
             print("  ",str(i[1])+"x",i[0])
             bbl[i[0].lower()]=[i[1],a]
     print()
-
-
+    wh=intput("What would you like to consume?")
+    if not wh.lower() in bbl:
+        tprint("Woops! You can't eat that!")
+        return
+    hpp=eatr[wh.lower()]
+    eff=""
+    if len(hpp[1])>0:
+        eff=choice(hpp[1])
+        p[3].append(eff)
+    hpp=hpp[0]
+    hpp+=randint(-floor(hpp/5),ceil(hpp/5))
+    p[4]+=hpp
+    tprint("You eat the",wh,"and it gives you",hpp,"HP points!","\nYou get the effect: "+eff if eff!="" else"")
 
 def res(tl):
     rs=[["nothing!"],["grass","hemp","seed"],["wood","leaf","apple"],["water","rock","fish"],["rock","coal","iron","wood"]][tl]#,"rock","rock","rock"
@@ -242,12 +252,26 @@ def res(tl):
     for i in range(randint(2,5)):
         fnd.append([choice(rs),randint(1,3)])
     return fnd
+def dcyc():
+    global tme
+    tm=""
+    #17 hrs
+    #4 portions:
+    #sunrise-midday
+    #midday-sunset
+    #sunset-midnight
+    #midnight-sunrise
+    if tme:
+        pass
 def action():
     tle=mp[p[0]][p[1]][0]
     tme=tmr()
     # print(tme)
     tprint("Its the",sm(tme[2][1]),"day. The hour is",str(tme[2][1])+".")
-    tprint("You"+eff[p[3]])
+    for i in p[3]:
+        tprint("You"+eff[i])
+    if len(p[3])==0:
+        tprint("You",eff[""])
     tprint("You are on a",["None","field","forest","river","moustain"][tle],"tile!")
     inp="3"#intput("You can:\n 1. Explore\n 2. Build\n 3. Eat\n 4. Rest\n 5. Look for resources\n 6. Open your backpack",sp=0.001)
     print()
@@ -265,7 +289,7 @@ def action():
             # continue
         case "3":
             eat()
-            b=intput("Sorry but eating isn't availible!",inp="Press enter to continue!")
+            # b=intput("Sorry but eating isn't availible!",inp="Press enter to continue!")
         case "4":
             tprint("You decide the nearest spot of ground looks comfy!")
             for i in ["z","Z","z","z","Z"]:
