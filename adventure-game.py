@@ -62,11 +62,11 @@ tme=[gt(),gt(),[2,0]]
 def tmr():
     global tme
     pt,ct=tme[1],gt()
-    cpt=((ct-pt))//17
+    cpt=((ct-pt))/17
     if cpt>17:
         cpt=cpt-17
     cpt+=tme[2][0]
-    return [round(pt),round(ct),[cpt,cpt//2]]
+    return [round(pt),round(ct),[cpt,cpt/2]]
 
 p=[0,0,[["Handbook",1],["seed",10]],[],100]
 mp=[[[randint(1,4),[]]]]
@@ -254,21 +254,57 @@ def res(tl):
     return fnd
 def dcyc():
     global tme
-    tm=""
+    tm=tme[2][0]
+    tmp=0
+    #-10 is freesing to death, 10 is cooking to death
     #17 hrs
-    #17/4=4.25
+    #17/4=4.25/4=1.0625
     #4 portions:
     #sunrise-midday  >0 and <=4.25
-    #midday-sunset   >4.25 and <=8.5
-    #sunset-midnight   
-    #midnight-sunrise
-    if tme:
-        pass
+    if tm>0  and tm<=1.0625:
+        tmp=-1
+    elif tm>1.0625  and tm<=2.125:
+        tmp=0
+    elif tm>2.125  and tm<=3.1875:
+        tmp=2
+    elif tm>3.1875  and tm<=4.25:
+        tmp=4
+        #midday-sunset   >4.25 and <=8.5
+    elif tm>4.25  and tm<=5.3125:
+        tmp=5
+    elif tm>5.3125  and tm<=6.375:
+        tmp=5
+    elif tm>6.375  and tm<=7.4375:
+        tmp=4
+    elif tm>7.4375  and tm<=8.5:
+        tmp=3
+        #sunset-midnight   >8.5 and <=12.75
+    elif tm>8.5  and tm<=9.5625:
+        tmp=2
+    elif tm>9.5625  and tm<=10.625:
+        tmp=1
+    elif tm>10.625  and tm<=11.6875:
+        tmp=0
+    elif tm>11.6875  and tm<=12.75:
+        tmp=-1
+        #midnight-sunrise   >12.75 and <=17 or 0
+    elif tm>12.75  and tm<=13.8125:
+        tmp=-3
+    elif tm>13.8125  and tm<=14.875:
+        tmp=-4
+    elif tm>14.875  and tm<=15.9375:
+        tmp=-5
+    elif tm>15.9375  and tm<=17:
+        tmp=-3
+    tmp+=randint(-1,1)
+    tmp/=2
+    return ["freezing","really cold","pretty cold","cold","slightly cold","good","slightly hot","hot","pretty hot","really hot","cooking"][floor(tmp)if tmp<0 else ceil(tmp)]
 def action():
     tle=mp[p[0]][p[1]][0]
     tme=tmr()
     # print(tme)
-    tprint("Its the",sm(tme[2][1]),"day. The hour is",str(tme[2][1])+".")
+    tprint("Its the",sm(floor(tme[2][1])),"day. The hour is",str(floor(tme[2][0]))+".")
+    tprint("You feel",dcyc()+".")
     for i in p[3]:
         tprint("You"+eff[i])
     if len(p[3])==0:
