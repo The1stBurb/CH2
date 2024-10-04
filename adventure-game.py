@@ -256,10 +256,11 @@ def dcyc():
     global tme
     tm=""
     #17 hrs
+    #17/4=4.25
     #4 portions:
-    #sunrise-midday
-    #midday-sunset
-    #sunset-midnight
+    #sunrise-midday  >0 and <=4.25
+    #midday-sunset   >4.25 and <=8.5
+    #sunset-midnight   
     #midnight-sunrise
     if tme:
         pass
