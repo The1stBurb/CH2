@@ -3,8 +3,10 @@ class movie:
         self.tit,self.ry,self.dir,self.rat,self.gr,self.ct=title,releaseYear,director,rating,genre,cast
         #titles, release year, director, rating, genre and cast
     def __str__(self):
-        return f"Title: {self.tit}\nRelease Year: {self.ry}\nDirector: {self.dir}\nRating: {self.rat}\nGenre: {self.gr}\nCast: {", ".join(self.ct)}"
-    def alphSort(self,otr):
+        return f"Title: {self.tit}\nRelease Year: {self.ry}\nDirector: {self.dir}\nRating: {self.rat}\nGenre: {self.gr}\nCast: {", ".join(self.ct)}\n"
+    def __lt__(self, other):
+        return self.tit < other.tit
+    def alphSort(self,g1,otr):
         m="abcdefghijklmnopqrstuvwxyz"
         frst=0
         for i in range(min(len(self.tit),len(otr.tit))):
@@ -51,27 +53,31 @@ movies=[
 def alphaSort():
     global movies
     # srt=[]
+    movies=sorted(movies, key=lambda x: x.tit)
+    return
     for i in range(len(movies)):
-        for j in range(i+1,len(movies)):
+        for j in range(len(movies)):
             movies[i],movies[j]=movies[i].alphSort(movies[i],movies[j])
 def getGnr(gnr):
     # inGnr=[]
     for i in movies:
         if i.inGnr(gnr):
             print(i)
-def getcst(gnr):
+def getCst(gnr):
     # inGnr=[]
     for i in movies:
         if i.cstSrch(gnr):
             print(i)
-def getGnr(gnr):
+def getDir(gnr):
     # inGnr=[]
     for i in movies:
-        if i.inGnr(gnr):
+        if i.dirSrch(gnr):
             print(i)
 def chronSort():
     global movies
     # srt=[]
+    movies=sorted(movies, key=lambda x: x.ry,reverse=True)
+    return
     for i in range(len(movies)):
         for j in range(i+1,len(movies)):
             movies[i],movies[j]=movies[i].chrnSort(movies[i],movies[j])
@@ -79,7 +85,7 @@ def pra():
     for i in movies:
         print(i)
 while True:
-    ac=input("1-Alphabetical sort\n2-Chronological Order\n3-Of Genre\n4-Director Search\n5-Cast Search ")
+    ac=input("1-Alphabetical sort\n2-Chronological Order\n3-Of Genre\n4-Director Search\n5-Cast Search\n >>")
     match ac:
         case "1":
             alphaSort()
@@ -92,7 +98,11 @@ while True:
             getGnr(wht)
         case "4":
             wht=input("Director: ")
-
+            getDir(wht)
+        case "5":
+            wht=input("Cast Member: ")
+            getCst(wht)
+    print()
 # Needs the init method yauygsalkjgjds
 # -Needs string methods that will print out all the information for the movies kjashgdkjgdsadsg
 # -Method that sorts the movies in alphabetical order kjaskjgdhdsag
