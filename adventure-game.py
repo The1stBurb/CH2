@@ -3,6 +3,11 @@ import sys
 from time import sleep,perf_counter
 from math import floor,ceil
 #from adventureSupp import craft
+class bg:
+    def __init__(self,name,hp,atk):
+        self.nm,self.hp,self.atk=name,hp,atk
+    def __str__(self):
+        return f"{self.nm}:\n  HP: {self.hp}\n  Atk: {self.atk}\n"
 def sm(n):
     n=int(n)
     ks={"1":"st","2":"nd","3":"rd"}
@@ -54,7 +59,6 @@ def intput(*txt,sp=0.005,inp=""):
     tprint(*txt,sp=sp)
     # print(txt)
     return input(inp+" >> ")
-
 def gt():
     # print(perf_counter_ns())
     return perf_counter()
@@ -67,8 +71,7 @@ def tmr():
     # if cpt>17:
     #     cpt=cpt-17
     tme=[round(tme[1]),round(ct),[(tme[2][0]+cpt)-(17 if tme[2][0]+cpt>17 else 0),tme[2][1]+(cpt/17)]]
-
-p=[0,0,[["Handbook",1],["seed",10]],{},100]
+p=[0,0,[["Handbook",1],["seed",10]],{},100,1]
 mp=[[[randint(1,4),[]]]]
 def upMp(d):
     global mp,p
@@ -214,9 +217,6 @@ eff={
     "unc":"r unconscious!",
     "wind":"r winded!",
 }
-# effdr={
-#     "":"no"
-# }
 eatr={
     #name:hunger/hp+,effects  "":[,[]],
     "grass":[0.1,[]],
@@ -275,6 +275,49 @@ def effd():
             p[3][i]-=1
             # print(i)
 
+def fight():
+    global p,bg
+    bd=bg("Bad guy",randint(5,10),randint(5,10))
+    print(bd)
+    t=1
+    fg=True
+    while fg:
+        if t==1:
+            print("It's your turn!")
+            print(" HP:",p[4],"\n ATK:",p[5])
+            dor=intput("What would you like to do?\n 1. Attack\n 2. Dodge\n 3. Run")
+            match dor:
+                case "1":
+                    dm=p[5]
+                    dm+=randint(max(-1,-floor(dm/5)),max(1,ceil(dm/5)))
+                    tprint("You attack for",dm,"damage!")
+                    bd.hp-=dm
+                    # print("ouch")
+                case "2":
+                    print("swish")
+                case "3":
+                    print("spede")
+                case _:
+                    continue
+        else:
+            print("It's",bd.nm+"'s turn!")
+            print(bd)
+            dm=bd.atk
+            dm+=randint(-floor(dm/5),ceil(dm/5))
+            tprint(bd.nm,"attacks for",dm,"damage!")
+            p[4]-=dm
+        if p[4]<=0 or bd.hp<=0:
+            fg=False
+            continue
+        t*=-1
+        print("\n")
+    if p[4]<=0:
+        print("\033cYou died!")
+        quit()
+    elif bd.hp<=0:
+        print("You won!")
+        hpp=randint(10,10 if p[4]>50 else 100)
+        print("You gain",hpp,"HP!")
 def res(tl):
     rs=[["nothing!"],["grass","hemp","seed"],["wood","leaf","apple"],["water","rock","fish"],["rock","coal","iron","wood"]][tl]#,"rock","rock","rock"
     fnd=[]
@@ -428,4 +471,5 @@ def action():
 # intput("You should find a handbook in your backpack!",sp=False,inp="Press enter to continue!")
 while True:
     print("\033c")
-    action()
+    # action()
+    fight()
