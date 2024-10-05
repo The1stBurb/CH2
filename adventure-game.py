@@ -72,7 +72,7 @@ def tmr():
     cpt=((ct-pt)/6)/17
     # if cpt>17:
     #     cpt=cpt-17
-    p[6]+=cpt
+    p[6]+=cpt*2
     tme=[round(tme[1]),round(ct),[(tme[2][0]+cpt)-(17 if tme[2][0]+cpt>17 else 0),tme[2][1]+(cpt/17)]]
 mp=[[[randint(1,4),[]]]]
 def upMp(d):
@@ -505,7 +505,7 @@ def action():
         case _:
             tprint("Woops! Not an action!")
     sleep(0.5)
-# tprint("Welcome to this world! If you don't remember, like most, you have been selected to test thois newly found world! Explore, because we are using YOU to find out if humans can live here! The country thanks you for your work!")
+# tprint("Welcome to this world! If you don't remember, like most, you have been selected to test this newly found world! Explore, because we are using YOU to find out if humans can live here! The country thanks you for your work!")
 # tprint("PS. if you are in trouble we won't rescue you!",sp=10**-15)
 # intput("You should find a handbook in your backpack!",sp=False,inp="Press enter to continue!")
 while True:
