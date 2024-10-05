@@ -445,7 +445,7 @@ def action():
             else:
                 tprint("Can't go that direction!")
             b=randint(0,3)
-            print(b)
+            # print(b)
             if b==0:
                 fight()
         case "2":
