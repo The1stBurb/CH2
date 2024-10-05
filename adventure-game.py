@@ -214,6 +214,9 @@ eff={
     "unc":"r unconscious!",
     "wind":"r winded!",
 }
+# effdr={
+#     "":"no"
+# }
 eatr={
     #name:hunger/hp+,effects  "":[,[]],
     "grass":[0.1,[]],
@@ -264,6 +267,13 @@ def eat():
     p[4]+=hpp
     tprint("You eat the",wh,"and it gives you",hpp,"HP points!","\nYou get the effect: "+eff[-1] if eff[-1]!="" else"")
     bfix()
+def effd():
+    global p
+    for i in p[3]:
+        # print(i)
+        if randint(0,3)==0:
+            p[3][i]-=1
+            # print(i)
 
 def res(tl):
     rs=[["nothing!"],["grass","hemp","seed"],["wood","leaf","apple"],["water","rock","fish"],["rock","coal","iron","wood"]][tl]#,"rock","rock","rock"
@@ -362,12 +372,14 @@ def hpr():
 def action():
     tle=mp[p[0]][p[1]][0]
     tmr()
+    effd()
     # print(tme,"\n",round(tme[1]-strt))
     vrb=str(floor(tme[2][0]*100))
     tprint("Its the",sm(floor(tme[2][1]+1)),"day. It's",("0"*(4-len(vrb)))+vrb,"o'clock.")
     tprint("You feel",hpr(),"and",dcyc()+".")
     for i in p[3]:
-        tprint("You"+eff[i],"x"+str(p[3][i]))
+        if p[3][i]>0:
+            tprint("You"+eff[i],"x"+str(p[3][i]))
     if len(p[3])==0:
         tprint("You"+eff[""])
     tprint("You are on a",["None","field","forest","river","moustain"][tle],"tile!")
