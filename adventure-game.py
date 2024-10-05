@@ -64,14 +64,16 @@ def gt():
     return perf_counter()
 strt=gt()
 tme=[gt(),gt(),[4.25,0]]
+p=[0,0,[["Handbook",1]],{},100,1,0]
+#x map, y map, inv[name, amnt],effects,hp,atk,hunger
 def tmr():
     global tme
     pt,ct=tme[1],gt()
     cpt=((ct-pt)/6)/17
     # if cpt>17:
     #     cpt=cpt-17
+    p[6]+=cpt
     tme=[round(tme[1]),round(ct),[(tme[2][0]+cpt)-(17 if tme[2][0]+cpt>17 else 0),tme[2][1]+(cpt/17)]]
-p=[0,0,[["Handbook",1],["seed",10]],{},100,1]
 mp=[[[randint(1,4),[]]]]
 def upMp(d):
     global mp,p
@@ -274,7 +276,25 @@ def effd():
         if randint(0,3)==0:
             p[3][i]-=1
             # print(i)
-
+def hgr():
+    global p
+    txt="dead from starving"
+    if p[6]>=0 and p[6]<2:
+        txt="full"
+    elif p[6]>=2 and p[6]<5:
+        txt="slightly hungry"
+    elif p[6]>=5 and p[6]<9:
+        txt="hungry"
+    elif p[6]>=9 and p[6]<12:
+        txt="really hungry"
+    elif p[6]>=12 and p[6]<13:
+        txt="starving"
+    elif p[6]>=13 and p[6]<15:
+        txt="really starving"
+    else:
+        print("\033cYou died from starvation.")
+        quit()
+    return txt
 def fight():
     global p,bg
     bd=bg("Bad guy",randint(5,10),randint(5,10))
@@ -374,6 +394,12 @@ def dcyc():
         tmp=-5
     elif tm>15.9375  and tm<=17:
         tmp=-3
+    if tmp==10:
+        print("\033cYou died from heatstroke!")
+        quit()
+    elif tmp==-10:
+        print("\033cYou died from the cold.")
+        quit()
     tmp+=randint(-1,1)
     tmp/=2
     tmp=floor(tmp)if tmp<0 else ceil(tmp)
@@ -419,6 +445,7 @@ def hpr():
         fel="incredibly amazingly over-healthier"
     return fel
 def action():
+    print(p[6])
     if randint(0,5)==0:
         fight()
     tle=mp[p[0]][p[1]][0]
@@ -427,7 +454,7 @@ def action():
     # print(tme,"\n",round(tme[1]-strt))
     vrb=str(floor(tme[2][0]*100))
     tprint("Its the",sm(floor(tme[2][1]+1)),"day. It's",("0"*(4-len(vrb)))+vrb,"o'clock.")
-    tprint("You feel",hpr(),"and",dcyc()+".")
+    tprint("You feel",hpr()+",",dcyc(),"and",hgr()+".")
     for i in p[3]:
         if p[3][i]>0:
             tprint("You"+eff[i],"x"+str(p[3][i]))
