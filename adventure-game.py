@@ -315,9 +315,15 @@ def fight():
         print("\033cYou died!")
         quit()
     elif bd.hp<=0:
-        print("You won!")
-        hpp=randint(10,10 if p[4]>50 else 100)
+        print("\n\n\nYou won!")
+        hpp=randint(10,50 if p[4]>50 else 100)
+        atp=randint(0,2)
         print("You gain",hpp,"HP!")
+        print("You gain",atp,"ATK!")
+        p[4]+=hpp
+        p[5]+=atp
+        intput("Press enter to continue!")
+    print("\033c")
 def res(tl):
     rs=[["nothing!"],["grass","hemp","seed"],["wood","leaf","apple"],["water","rock","fish"],["rock","coal","iron","wood"]][tl]#,"rock","rock","rock"
     fnd=[]
@@ -413,6 +419,8 @@ def hpr():
         fel="incredibly amazingly over-healthier"
     return fel
 def action():
+    if randint(0,5)==0:
+        fight()
     tle=mp[p[0]][p[1]][0]
     tmr()
     effd()
@@ -436,6 +444,10 @@ def action():
                 # print(mp)
             else:
                 tprint("Can't go that direction!")
+            b=randint(0,3)
+            print(b)
+            if b==0:
+                fight()
         case "2":
             build()
             # b=input("Sorry but building isn't availible!",inp="Press enter to continue!")
@@ -471,5 +483,5 @@ def action():
 # intput("You should find a handbook in your backpack!",sp=False,inp="Press enter to continue!")
 while True:
     print("\033c")
-    # action()
-    fight()
+    action()
+    # fight()
