@@ -66,8 +66,16 @@ class order:
         return ord
     @classmethod
     def hppy(self):
+        inp=input("Are you happy with your order?(y/n) ")
+        if inp!="y":
+            ord=order.get()
+    @staticmethod
+    def chDr(ord):
+        return "none" if ord.drnk!="none"or ord.drnk!="" else ord.drnk
+
 ord=order.get()
 print(ord)
-inp=input("Are you happy with your order?(y/n) ")
-if inp!="y":
-    ord=order.get()
+order.hppy()
+b=input("Are you sure you want a drink?(y/n) ")
+if b=="n":
+    ord.drnk=order.chDr(ord)
