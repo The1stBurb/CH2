@@ -26,7 +26,7 @@ class order:
         self.sid2=sid2
         self.dess=dess
     def __str__(self):
-        return f"Drink: {self.drnk}\nAppateizer: {self.app}\nFirst Side: {self.sid1}\nSecond Side: {self.sid2}\nDessert: {self.dess}\nPrice: {prc[self.drnk]+prc[self.app]+prc[self.sid1]+prc[self.sid2]+prc[self.dess]}\n"
+        return f"Drink: {self.drnk}\nAppateizer: {self.app}\nFirst Side: {self.sid1}\nSecond Side: {self.sid2}\nDessert: {self.dess}\nPrice: {prc[self.drnk]+prc[self.app]+prc[self.sid1]+prc[self.sid2]+prc[self.dess]}₪\n"
     def ord1(self):
         return self.drnk=="none"and self.app=="none"and self.sid1=="none"and self.sid2=="none"and self.dess=="none"
     @classmethod
@@ -46,7 +46,7 @@ class order:
         for a,i in enumerate(itms):
             print(["Drink","Appetizer","First Side","Second Side","Dessert"][a]+":")
             for j in itms[i]:
-                print("  ",j+":",prc[j],"moneys")
+                print("  ",j+":",str(prc[j])+"₪")
             print()
         ord=order()
         while True:
