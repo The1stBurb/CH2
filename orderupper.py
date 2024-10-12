@@ -16,8 +16,8 @@
 # Makes sure that the user has ordered at least 1 item kjasdgksadgkjdsg
 # Allows user to place their order jknsdkjlgskga
 # Allows user to change an item in their orderkjasdgkjdsg
-itms={"drink":["water","wet water","soda","none"],"app":["salad","ice cream","apple","none"],"sid1":["sauce","apple sauce","frog soup","none"],"sid2":["icicles","food","beetles","none"],"dess":["salamanders","forks","spinach","walruses","none"]}
-prc={"water":1,"wet water":2,"soda":5,"none":0.01,"salad":1,"ice cream":5,"apple":2,"sauce":1,"apple sauce":3,"frog soup":7,"icicles":2,"food":1,"beetles":4.99,"salamanders":9.99,"forks":1,"spinach":5,"walruses":170,}
+itms={"drink":["water","wet water","chilled water","iced water","ice water","condensed air","none"],"app":["salad","ice cream","apple","none"],"sid1":["sauce","apple sauce","frog soup","none"],"sid2":["icicles","food","beetles","none"],"dess":["salamanders","forks","spinach","walruses","none"]}
+prc={"water":1,"wet water":2,"chilled water":3,"iced water":4,"ice water":5,"condensed air":6,"none":0.01,"salad":1,"ice cream":5,"apple":2,"sauce":1,"apple sauce":3,"frog soup":7,"icicles":2,"food":1,"beetles":4.99,"salamanders":9.99,"forks":1,"spinach":5,"walruses":170,}
 class order:
     def __init__(self,drnk="",app="",sid1="",sid2="",dess=""):
         self.drnk=drnk
