@@ -33,7 +33,7 @@ class order:
     def dllr(self):
         return order("water","salad","sauce","food","forks")
     @classmethod
-    def gt(inr):
+    def gt(self,inr):
         while True:
             inp=input("What would you like to get thats an "+{"drink":"drink","app":"appetizer","sid1":"first side","sid2":"second side","dess":"dessert"}[inr]+"? ")
             if inp in itms[inr]:
@@ -42,7 +42,7 @@ class order:
             else:
                 print("Thats not an option!")
     @classmethod
-    def get():
+    def get(self):
         for a,i in enumerate(itms):
             print(["Drink","Appetizer","First Side","Second Side","Dessert"][a]+":")
             for j in itms[i]:
