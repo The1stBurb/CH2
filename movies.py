@@ -3,7 +3,7 @@ class movie:
         self.tit,self.ry,self.dir,self.rat,self.gr,self.ct=title,releaseYear,director,rating,genre,cast
         #titles, release year, director, rating, genre and cast
     def __str__(self):
-        return f"Title: {self.tit}\nRelease Year: {self.ry}\nDirector: {self.dir}\nRating: {self.rat}\nGenre: {self.gr}\nCast: {", ".join(self.ct)}\n"
+        return f"Title: {self.tit}\nRelease Year: {self.ry}\nDirector: {self.dir}\nRating: {self.rat}\nGenre: {self.gr}\nCast: "+(", ".join(self.ct))+"\n"
     def __lt__(self, other):
         return self.tit < other.tit
     def alphSort(self,g1,otr):
