@@ -79,3 +79,4 @@ order.hppy()
 b=input("Are you sure you want a drink?(y/n) ")
 if b=="n":
     ord.drnk=order.chDr(ord)
+print(ord
