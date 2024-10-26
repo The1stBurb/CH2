@@ -3,7 +3,7 @@ class movie:
         self.tit,self.ry,self.dir,self.rat,self.gr,self.ct=title,releaseYear,director,rating,genre,cast
         #titles, release year, director, rating, genre and cast
     def __str__(self):
-        return f"Title: {self.tit}\nRelease Year: {self.ry}\nDirector: {self.dir}\nRating: {self.rat}\nGenre: {self.gr}\nCast: {", ".join(self.ct)}\n"
+        return f"Title: {self.tit}\nRelease Year: {self.ry}\nDirector: {self.dir}\nRating: {self.rat}\nGenre: {self.gr}\nCast: "+(", ".join(self.ct))+"\n"
     def __lt__(self, other):
         return self.tit < other.tit
     def alphSort(self,g1,otr):
@@ -86,22 +86,22 @@ def pra():
         print(i)
 while True:
     ac=input("1-Alphabetical sort\n2-Chronological Order\n3-Of Genre\n4-Director Search\n5-Cast Search\n >>")
-    match ac:
-        case "1":
-            alphaSort()
-            pra()
-        case "2":
-            chronSort()
-            pra()
-        case "3":
-            wht=input("What genre? ")
-            getGnr(wht)
-        case "4":
-            wht=input("Director: ")
-            getDir(wht)
-        case "5":
-            wht=input("Cast Member: ")
-            getCst(wht)
+    # match ac:
+    if ac=="1":
+        alphaSort()
+        pra()
+    elif ac=="2":
+        chronSort()
+        pra()
+    elif ac=="3":
+        wht=input("What genre? ")
+        getGnr(wht)
+    elif ac=="4":
+        wht=input("Director: ")
+        getDir(wht)
+    elif ac=="5":
+        wht=input("Cast Member: ")
+        getCst(wht)
     print()
 # Needs the init method yauygsalkjgjds
 # -Needs string methods that will print out all the information for the movies kjashgdkjgdsadsg
